@@ -38,7 +38,12 @@
 
 (defn now [acceptLang]
   (println acceptLang)
-  (let [locale (processAcceptLang acceptLang)] (println "output locale:" locale)
+  (let [
+        locale (processAcceptLang acceptLang)
+        formattr (DateTimeFormatter/ofLocalizedDateTime FormatStyle/LONG)
+        ]
+    (println "output locale:" locale)
+    (println "formatter:" formattr)
        )
   
 ;;  (let [
@@ -47,7 +52,7 @@
 ;;        ]
 ;;    (println formattr)
 ;;    )
-  )
+)
 
 (defn current-date-time [acceptLang]
   (println "Current date time" acceptLang)
