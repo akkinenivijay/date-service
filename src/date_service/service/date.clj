@@ -1,14 +1,12 @@
 (ns date-service.service.date 
   (:import (java.time format.DateTimeFormatter format.FormatStyle ZoneId Instant) (java.util Locale))
+  (:require [clojure.string :as str])
   )
-
-
-;; (def formatter (.withZone (DateTimeFormatter/ofLocalizedDateTime FormatStyle/LONG) (ZoneId/systemDefault)))
 
 (defn constructLocale [lstr]
   ;; Constructs a Locale from language and country.
   ;; Below are the conditions for different Locale constructors.
-  (let [[:as params] (clojure.string/split lstr #"_")]
+  (let [[:as params] (str/split lstr #"_")]
     (cond
       (= (count params) 1)
       (apply (fn [p1] (Locale. p1)) params)
@@ -20,50 +18,29 @@
 
 (defn resolveLocale [lstr]
   ;; Return a default Locale if the accept-language string is blank
-  (println "resolveLocale" lstr) 
-  (if (clojure.string/blank? lstr) (java.util.Locale/getDefault) (constructLocale lstr))
+  (if (str/blank? lstr) (java.util.Locale/getDefault) (constructLocale lstr))
   )
 
 (defn processAcceptLang [acceptLang]
   ;; Processes Accept-lang header to set the date time format to Locale of the User. 
   ;; Time zone formatting is ignored as a country can have multiple time zones.
-  (if (clojure.string/blank? acceptLang) 
+  (if (str/blank? acceptLang) 
     (Locale/getDefault)
     (let [[:as lang] 
-          (nth (clojure.string/split acceptLang  #",") 0)]
-      (resolveLocale (clojure.string/replace lang  #"-" "_"))
+          (nth (str/split acceptLang  #",") 0)]
+      (resolveLocale (str/replace lang  #"-" "_"))
       )
     )
   )
 
 (defn now [acceptLang]
-  (println acceptLang)
+  ;; Returns the current time in a format compatible with the user's Locale.
   (let [
         locale (processAcceptLang acceptLang)
         formattr (DateTimeFormatter/ofLocalizedDateTime FormatStyle/LONG)
+        formattrWithZone (.withZone formattr (ZoneId/systemDefault))
+        formattrWithLocale (.withLocale formattrWithZone locale)
         ]
-    (println "output locale:" locale)
-    (println "formatter:" formattr)
+    {:time_of_day (.format formattrWithLocale (Instant/now))}
        )
-  
-;;  (let [
-;;        locale processAcceptLang(acceptLang)
-;;        formattr (.withLocale (.withZone (DateTimeFormatter/ofLocalizedDateTime FormatStyle/LONG) (ZoneId/systemDefault)) locale)
-;;        ]
-;;    (println formattr)
-;;    )
 )
-
-(defn current-date-time [acceptLang]
-  (println "Current date time" acceptLang)
-  (println (now acceptLang))
-  {:time_of_day "test"}
-
-  ;;{:time_of_day (.format formatter (Instant/now))}
-  )
-
-;;(resolveLocale "en_US")
-
-;;(processAcceptLang "en-US ,en;q=0.8 ,te;q=0.6")
-
-;;(current-date-time "hello")
