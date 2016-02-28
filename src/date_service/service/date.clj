@@ -2,15 +2,13 @@
   (:import (java.time format.DateTimeFormatter format.FormatStyle ZoneId Instant) (java.util Locale))
   )
 
-(def mock-map {:key "mock"})
-
 (def formatter (.withZone (DateTimeFormatter/ofLocalizedDateTime FormatStyle/LONG) (ZoneId/systemDefault)))
 
 (defn current-date-time [] {:time_of_day (.format formatter (Instant/now))})
 
-(current-date-time)
-
 (defn constructLocale [lstr]
+  ;; Constructs a Locale from language and country.
+  ;; Below are the conditions for different Locale constructors.
   (let [[:as params] (clojure.string/split lstr #"_")]
     (cond
       (= (count params) 1)
@@ -23,8 +21,26 @@
 
 (defn resolveLocale [lstr]
   ;; Return a default Locale if the accept-language string is blank
-  (println lstr) 
+  (println "resolveLocale" lstr) 
   (if (clojure.string/blank? lstr) (java.util.Locale/getDefault) (constructLocale lstr))
   )
 
+(defn processAcceptLang [acceptLang]
+  ;; Processes Accept-lang header to set the date time format to Locale of the User. 
+  ;; Time zone formatting is ignored as a country can have multiple time zones.
+  (if (clojure.string/blank? acceptLang) 
+    (Locale/getDefault)
+    (let [[:as lang] 
+          (nth (clojure.string/split acceptLang  #",") 0)]
+      (println "lang" lang)
+      (resolveLocale (clojure.string/replace lang  #"-" "_"))
+      )
+    )
+  )
+
+
 (resolveLocale "en_US")
+
+(processAcceptLang "en-US ,en;q=0.8 ,te;q=0.6")
+
+(current-date-time)
