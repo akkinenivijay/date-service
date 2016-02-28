@@ -2,9 +2,8 @@
   (:import (java.time format.DateTimeFormatter format.FormatStyle ZoneId Instant) (java.util Locale))
   )
 
-(def formatter (.withZone (DateTimeFormatter/ofLocalizedDateTime FormatStyle/LONG) (ZoneId/systemDefault)))
 
-(defn current-date-time [] {:time_of_day (.format formatter (Instant/now))})
+;; (def formatter (.withZone (DateTimeFormatter/ofLocalizedDateTime FormatStyle/LONG) (ZoneId/systemDefault)))
 
 (defn constructLocale [lstr]
   ;; Constructs a Locale from language and country.
@@ -32,15 +31,34 @@
     (Locale/getDefault)
     (let [[:as lang] 
           (nth (clojure.string/split acceptLang  #",") 0)]
-      (println "lang" lang)
       (resolveLocale (clojure.string/replace lang  #"-" "_"))
       )
     )
   )
 
+(defn now [acceptLang]
+  (println acceptLang)
+  (let [locale (processAcceptLang acceptLang)] (println "output locale:" locale)
+       )
+  
+;;  (let [
+;;        locale processAcceptLang(acceptLang)
+;;        formattr (.withLocale (.withZone (DateTimeFormatter/ofLocalizedDateTime FormatStyle/LONG) (ZoneId/systemDefault)) locale)
+;;        ]
+;;    (println formattr)
+;;    )
+  )
 
-(resolveLocale "en_US")
+(defn current-date-time [acceptLang]
+  (println "Current date time" acceptLang)
+  (println (now acceptLang))
+  {:time_of_day "test"}
 
-(processAcceptLang "en-US ,en;q=0.8 ,te;q=0.6")
+  ;;{:time_of_day (.format formatter (Instant/now))}
+  )
 
-(current-date-time)
+;;(resolveLocale "en_US")
+
+;;(processAcceptLang "en-US ,en;q=0.8 ,te;q=0.6")
+
+;;(current-date-time "hello")

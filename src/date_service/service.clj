@@ -15,7 +15,10 @@
 (defn get-date
   ;;Function to return date
   [request]
-  (bootstrap/json-response (dateService/current-date-time)))
+  (let [acceptlang (get-in request [:headers "accept-language"])]
+    (println acceptlang)
+    (bootstrap/json-response (dateService/current-date-time acceptlang)))
+  )
 
 (defn home-page
   [request]
