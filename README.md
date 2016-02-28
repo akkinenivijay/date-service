@@ -1,6 +1,6 @@
 # date-service
 
-FIXME
+A Clojure based rest api to serve current time.
 
 ## Getting Started
 
