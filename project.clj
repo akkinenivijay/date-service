@@ -6,6 +6,8 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/data.json "0.2.6"]
                  [io.pedestal/pedestal.service "0.4.1"]
+                 [org.clojure/core.async "0.2.374"]
+                 [io.reactivex/rxclojure "1.0.0"]
 
                  ;; Remove this line and uncomment one of the next lines to
                  ;; use Immutant or Tomcat instead of Jetty:
