@@ -33,26 +33,14 @@
     )
   )
 
-(defn now [acceptLang]
-  ;; Returns the current time in a format compatible with the user's Locale.
-  (let [
-        locale (processAcceptLang acceptLang)
-        formattr (DateTimeFormatter/ofLocalizedDateTime FormatStyle/LONG)
-        formattrWithZone (.withZone formattr (ZoneId/systemDefault))
-        formattrWithLocale (.withLocale formattrWithZone locale)
-        ]
-    {:time_of_day (.format formattrWithLocale (Instant/now))}
-       )
-)
-
-(defn now2 [acceptLang]
-  (let [formatterWithLocale 
+(defn now [acceptLang instantNow]
+  (let [timeOfTheDay
         (-> (DateTimeFormatter/ofLocalizedDateTime FormatStyle/LONG)
             (.withZone (ZoneId/systemDefault))
             (.withLocale (processAcceptLang acceptLang))
+            (.format instantNow)
             )]
-    (println formatterWithLocale)
-    {:time_of_day (.format formatterWithLocale (Instant/now))}
+    {:time_of_day timeOfTheDay}
     )
   )
 
@@ -62,4 +50,4 @@
 
 (processAcceptLang "en-US,en;q=0.9,it;q=0.7,es;q=0.5")
 
-(now2 "en-US,en;q=0.9,it;q=0.7,es;q=0.5")
+(now "en-US,en;q=0.9,it;q=0.7,es;q=0.5" (Instant/now))

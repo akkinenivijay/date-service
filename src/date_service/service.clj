@@ -4,7 +4,9 @@
             [io.pedestal.http.body-params :as body-params]
             [io.pedestal.http.route.definition :refer [defroutes]]
             [ring.util.response :as ring-resp]
-            [date-service.service.date :as dateService]))
+            [date-service.service.date :as dateService])
+  (:import (java.time Instant))
+  )
 
 (defn about-page
   [request]
@@ -16,7 +18,7 @@
   ;;Function to return date
   [request]
   (let [acceptlang (get-in request [:headers "accept-language"])]
-    (bootstrap/json-response (dateService/now acceptlang)))
+    (bootstrap/json-response (dateService/now acceptlang (Instant/now))))
   )
 
 (defn home-page
