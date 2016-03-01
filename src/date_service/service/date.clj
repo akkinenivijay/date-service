@@ -44,3 +44,22 @@
     {:time_of_day (.format formattrWithLocale (Instant/now))}
        )
 )
+
+(defn now2 [acceptLang]
+  (let [formatterWithLocale 
+        (-> (DateTimeFormatter/ofLocalizedDateTime FormatStyle/LONG)
+            (.withZone (ZoneId/systemDefault))
+            (.withLocale (processAcceptLang acceptLang))
+            )]
+    (println formatterWithLocale)
+    {:time_of_day (.format formatterWithLocale (Instant/now))}
+    )
+  )
+
+(constructLocale "en_US")
+
+(resolveLocale "en_US")
+
+(processAcceptLang "en-US,en;q=0.9,it;q=0.7,es;q=0.5")
+
+(now2 "en-US,en;q=0.9,it;q=0.7,es;q=0.5")
