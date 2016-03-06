@@ -24,6 +24,5 @@
   :profiles {:dev {:aliases {"run-dev" ["trampoline" "run" "-m" "date-service.server/run-dev"]}
                    :dependencies [[io.pedestal/pedestal.service-tools "0.4.1"]]}
              :uberjar {:aot [date-service.server]}}
-  :plugins [[cider/cider-nrepl "0.10.2"]]
   :main ^{:skip-aot true} date-service.server)
 

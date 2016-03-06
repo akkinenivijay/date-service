@@ -18,8 +18,7 @@
 
 (defn resolveLocale [lstr]
   ;; Return a default Locale if the accept-language string is blank
-  (if (str/blank? lstr) (java.util.Locale/getDefault) (constructLocale lstr))
-  )
+  (if (str/blank? lstr) (java.util.Locale/getDefault) (constructLocale lstr)))
 
 (defn processAcceptLang [acceptLang]
   ;; Processes Accept-lang header to set the date time format to Locale of the User. 
@@ -34,15 +33,12 @@
   )
 
 (defn now [acceptLang instantNow]
-  (let [timeOfTheDay
+  (let [timeOfTheDay 
         (-> (DateTimeFormatter/ofLocalizedDateTime FormatStyle/LONG)
             (.withZone (ZoneId/systemDefault))
             (.withLocale (processAcceptLang acceptLang))
-            (.format instantNow)
-            )]
-    {:time_of_day timeOfTheDay}
-    )
-  )
+            (.format instantNow))]
+    {:time_of_day timeOfTheDay}))
 
 (constructLocale "en_US")
 
