@@ -9,7 +9,8 @@
                  [org.clojure/core.async "0.2.374"]
                  [io.reactivex/rxclojure "1.0.0"]
                  [co.paralleluniverse/pulsar "0.7.4"]
-               
+                 [cheshire "5.5.0"]
+
                  ;; Remove this line and uncomment one of the next lines to
                  ;; use Immutant or Tomcat instead of Jetty:
                  [io.pedestal/pedestal.jetty "0.4.1"]
@@ -20,6 +21,7 @@
                  [org.slf4j/jul-to-slf4j "1.7.12"]
                  [org.slf4j/jcl-over-slf4j "1.7.12"]
                  [org.slf4j/log4j-over-slf4j "1.7.12"]]
+  :bootclasspath true
   :min-lein-version "2.0.0"
   :java-agents [[co.paralleluniverse/quasar-core "0.7.4"]]
   :resource-paths ["config", "resources"]

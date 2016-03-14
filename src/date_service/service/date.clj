@@ -1,6 +1,7 @@
 (ns date-service.service.date 
   (:import (java.time format.DateTimeFormatter format.FormatStyle ZoneId Instant) (java.util Locale))
-  (:require [clojure.string :as str])
+  (:require [clojure.string :as str]
+            [cheshire.core :refer :all :as chesh])
   )
 
 (defn constructLocale [lstr]
@@ -47,3 +48,5 @@
 (processAcceptLang "en-US,en;q=0.9,it;q=0.7,es;q=0.5")
 
 (now "en-US,en;q=0.9,it;q=0.7,es;q=0.5" (Instant/now))
+
+(chesh/generate-string {:foo "bar" :baz 5})
